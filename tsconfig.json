@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "module": "NodeNext",
+    "moduleResolution": "Node16",
+    "sourceMap": true,
+    "rootDir": "./src", /* Specify the root folder within your source files. */
+    "outDir": "./dist", /* Specify an output folder for all emitted files. */
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
