@@ -1,4 +1,4 @@
-import { Result, ValidationError } from "express-validator";
+import { ValidationError } from "express-validator";
 
 //we add status code extra propr to handle the errors inside a middleware
 export class ErrorExt extends Error {

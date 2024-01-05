@@ -1,7 +1,6 @@
 import ev from "express-validator";
 import { getfieldName } from "../utils/getFieldName.js";
 import { UserModel } from "../models/schemas/user.schema.js";
-import { ErrorExt } from "../models/extensions/error.extension.js";
 import { SignOn } from "../models/dto/authentication.dto.js";
 
 export const singOn = [
@@ -10,10 +9,10 @@ export const singOn = [
     .withMessage({ message: "MISSING_USERNAME", errorCode: 400 })
     .custom(async searchedUsername => {
       const match = await UserModel.findOne({ username: searchedUsername });
-      if (match)
-        throw new Error();
+      if (match !== null)
+        throw new Error('Username already exists');
       else
-        return true
+        return true;
     })
     .withMessage({ message: "USERNAME_TAKEN", errorCode: 409 }),
 
@@ -26,12 +25,7 @@ export const singOn = [
   ev.body(getfieldName<SignOn>("passwordCopy"))
     .exists()
     .withMessage({ message: "MISSING_PASSWORD_COPY", errorCode: 400 })
-    .custom((passwordCopy, { req }) => {
-      if (passwordCopy !== req.body.password)
-        throw new Error();
-      else
-        return true
-    })
+    .custom((passwordCopy, { req }) => passwordCopy === req.body.password)
     .withMessage({ message: "PASSWORDS_NOT_EQUAL", errorCode: 400 }),
 
 ]
