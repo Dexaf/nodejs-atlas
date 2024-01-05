@@ -1,6 +1,6 @@
 import express from "express";
 import * as authenticationController from "../../controllers/authentication.controller.js";
-import * as authenticationValidationChains from "./authentication.validation-chains.js";
+import * as authenticationValidationChains from "../../validation-chains/authentication.validation-chains.js";
 
 const authenticationRouter = express.Router();
 

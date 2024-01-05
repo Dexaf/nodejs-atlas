@@ -29,9 +29,7 @@ try {
 
         app.use((error: ErrorExt, req: express.Request, res: express.Response, next: express.NextFunction) => {
           const status = error.statusCode || 500;
-          const message = error.message;
-          const errors = error.errors ? error.errors["errors"] : [];
-          res.status(status).json({ message: message, errors: errors });
+          res.status(status).json({error});
         })
         //!SECTION - ROUTES
 
