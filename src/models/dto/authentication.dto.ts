@@ -1,10 +1,10 @@
-export interface SignOn {
+export interface SignOnDto {
   username: string,
   password: string,
   passwordCopy: string
 }
 
-export interface LogIn {
+export interface LogInDto {
   username: string,
   password: string,
 }

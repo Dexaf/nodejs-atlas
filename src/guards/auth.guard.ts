@@ -4,8 +4,9 @@ import express from 'express';
 import { envs } from '../config.js'
 import { ErrorExt } from '../models/extensions/error.extension.js';
 import { JwtData } from '../models/interfaces/jwtData.interface.js';
+import { CustomRequest } from '../models/extensions/request.extension.js';
 
-export const isAuthGuard = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+export const isAuthGuard = (req: CustomRequest, res: express.Response, next: express.NextFunction) => {
   const authHeader = req.get('Authorization');
 
   if (!authHeader) {
@@ -28,6 +29,9 @@ export const isAuthGuard = (req: express.Request, res: express.Response, next: e
     throw new ErrorExt('Not authenticated.', 401, null);
   }
 
-  //req.userId = decodedToken.userData.id
+  req.user = {
+    id: decodedToken.userData.id
+  }
+
   next();
 }

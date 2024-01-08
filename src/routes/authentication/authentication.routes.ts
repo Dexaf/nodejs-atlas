@@ -5,7 +5,7 @@ import { isAuthGuard } from "../../guards/auth.guard.js";
 
 const authenticationRouter = express.Router();
 
-authenticationRouter.get('/Users', isAuthGuard, authenticationController.getUsers)
+authenticationRouter.get('/User', isAuthGuard, authenticationController.getUser)
 authenticationRouter.post('/SignOn', authenticationValidationChains.singOn, authenticationController.signOn)
 authenticationRouter.post('/LogIn', authenticationValidationChains.logIn, authenticationController.logIn)
 
