@@ -5,6 +5,7 @@ import { envs } from './config.js'
 import { connect } from './mongoose-starter.js';
 import { ErrorExt } from './models/extensions/error.extension.js';
 import authenticationRouter from './routes/authentication/authentication.routes.js'
+import { logError } from './utils/logError.js';
 
 try {
   if (envs) {
@@ -28,8 +29,9 @@ try {
         app.use('/Auth', authenticationRouter);
 
         app.use((error: ErrorExt, req: express.Request, res: express.Response, next: express.NextFunction) => {
+          logError(error);
           const status = error.statusCode || 500;
-          res.status(status).json({error});
+          res.status(status).json({ message: error.message, errors: error.errors ?? [] });
         })
         //!SECTION - ROUTES
 

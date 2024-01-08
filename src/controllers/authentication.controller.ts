@@ -25,11 +25,12 @@ export const signOn = async (req: express.Request<{}, {}, SignOn>, res: express.
     return errorHandlingRoutine(error, next);
   }
 }
- 
+
+
 export const logIn = async (req: express.Request<{}, {}, LogIn>, res: express.Response, next: express.NextFunction) => {
   try {
     validationHandlingRoutine(req, res);
-    const user = await UserModel.findOne({ username: req.body.password });
+    const user = await UserModel.findOne({ username: req.body.username });
     if (!user)
       throw new ErrorExt("NO_USERNAME_FOUND_IN_LOGIN", 404, null);
 
@@ -38,7 +39,12 @@ export const logIn = async (req: express.Request<{}, {}, LogIn>, res: express.Re
     if (!isPasswordMatching)
       throw new ErrorExt("WRONG_PASSWORD", 403, null);
 
-    const token = jwt.sign({ user }, envs!.JWT_SECRET, { expiresIn: "24h" })
+    const userData = {
+      id: user._id,
+      username: user.username
+    };
+
+    const token = jwt.sign({ userData }, envs!.JWT_SECRET, { expiresIn: envs!.JWT_EXPIRATIONS })
 
     res.send(token).status(200)
   } catch (error: any) {

@@ -3,6 +3,7 @@ import express from 'express';
 
 import { envs } from '../config.js'
 import { ErrorExt } from '../models/extensions/error.extension.js';
+import { JwtData } from '../models/interfaces/jwtData.interface.js';
 
 export const isAuthGuard = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const authHeader = req.get('Authorization');
@@ -12,19 +13,21 @@ export const isAuthGuard = (req: express.Request, res: express.Response, next: e
   }
 
   const token = authHeader.split(' ')[1];
-  let decodedToken;
+  let decodedToken: JwtData;
 
   try {
-    decodedToken = jwt.verify(token, envs!.JWT_SECRET);
+    decodedToken = jwt.verify(token, envs!.JWT_SECRET) as JwtData;
   } catch (err) {
-    throw new ErrorExt('Error during verification', 500, null);
+    if (err.message === "jwt expired")
+      throw new ErrorExt('JWT_EXPIRED', 500, null);
+    else
+      throw new ErrorExt('Error during verification', 500, null);
   }
 
   if (!decodedToken) {
     throw new ErrorExt('Not authenticated.', 401, null);
   }
 
-  console.log(decodedToken);
-  //req.userId = decodedToken.userId
+  //req.userId = decodedToken.userData.id
   next();
 }
