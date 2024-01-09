@@ -1,49 +1,42 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 
 import { envs } from './config.js'
 import { connect } from './mongoose-starter.js';
-import { ErrorExt } from './models/extensions/error.extension.js';
 import authenticationRouter from './routes/authentication/authentication.routes.js'
-import { logError } from './utils/logError.js';
+import bodyParserMiddleware from './middlewares/body-parser.middleware.js';
+import headersMiddleware from './middlewares/headers.middleware.js';
+import errorMiddleware from './middlewares/error.middleware.js';
+import crashHandlingRoutine from './utils/crashHandlingRoutine.js';
 
-try {
-  if (envs) {
-    const app = express();
+const main = async () => {
+  try {
+    if (envs) {
+      const app = express();
 
-    //connect to mongoose
-    connect()
-      .then(() => {
-        //SECTION - MIDDLEWARES
-        app.use(bodyParser.json());
+      //connect to mongoose
+      await connect()
 
-        app.use((req, res, next) => {
-          res.setHeader('Access-Control-Allow-Origin', envs!.ALLOWED_ORIGINS);
-          res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
-          res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-          next();
-        })
-        //!SECTION - MIDDLEWARES
+      //SECTION - MIDDLEWARES
+      app.use(bodyParserMiddleware);
+      app.use(headersMiddleware);
+      //!SECTION - MIDDLEWARES
 
-        //SECTION - ROUTES
-        app.use('/Auth', authenticationRouter);
+      //SECTION - ROUTES
+      app.use('/Auth', authenticationRouter);
+      //!SECTION - ROUTES
 
-        app.use((error: ErrorExt, req: express.Request, res: express.Response, next: express.NextFunction) => {
-          logError(error);
-          const status = error.statusCode || 500;
-          res.status(status).json({ message: error.message, errors: error.errors ?? [] });
-        })
-        //!SECTION - ROUTES
+      //NOTE - error middleware need to be here to catch errors from the route
+      app.use(errorMiddleware);
 
-        app.listen(envs.PORT);
-        console.log(`Listening on port:${envs.PORT}`);
-      });
+      app.listen(envs.PORT);
+      console.log(`Listening on port:${envs.PORT}`);
+    }
+    else
+      throw new Error("CONFIG NOT DEFINED")
+
+  } catch (error) {
+    crashHandlingRoutine(error);
   }
-  else
-    throw new Error("CONFIG NOT DEFINED")
-
-} catch (error) {
-  console.error("There was an error, check logs")
 }
 
-
+await main();

@@ -1,9 +1,11 @@
 import dotenv from 'dotenv';
 
-const result = dotenv.config()
+let result
 
-if (result.error) {
-  throw result.error;
+try {
+  result = dotenv.config()
+} catch (error) {
+  throw new Error(error)
 }
 
 export const { parsed: envs } = result;
