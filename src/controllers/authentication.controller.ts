@@ -7,7 +7,7 @@ import { LogInDto, SignOnDto } from "../models/dto/authentication.dto.js";
 import { UserModel } from "../models/schemas/user.schema.js";
 import { ErrorExt } from "../models/extensions/error.extension.js";
 import { envs } from "../config.js";
-import { errorHandlingRoutine, validationHandlingRoutine } from "../utils/errorHandlingRoutine.js";
+import { errorHandlingRoutine, validationHandlingRoutine } from "../utils/errorHandlingRoutines.js";
 import UserInterface from "../models/interfaces/user.interface.js";
 import { CustomRequest } from "../models/extensions/request.extension.js";
 
