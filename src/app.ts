@@ -35,6 +35,7 @@ const main = async () => {
       throw new Error("CONFIG NOT DEFINED")
 
   } catch (error) {
+    //code for when the env param fetch crashes
     crashHandlingRoutine(error);
   }
 }
