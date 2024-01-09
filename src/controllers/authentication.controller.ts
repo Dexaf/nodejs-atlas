@@ -24,7 +24,12 @@ export const signOn = async (req: express.Request, res: express.Response, next: 
       password: hashedPass
     });
     await newUser.save();
-    res.send(newUser).status(200);
+
+    const userData = {
+      id: newUser._id,
+      username: newUser.username
+    };
+    res.send(userData).status(200);
   } catch (error: any) {
     return errorHandlingRoutine(error, next);
   }
