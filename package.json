@@ -7,7 +7,8 @@
   "scripts": {
     "test": "test",
     "start": "node ./dist/app.js",
-    "start-n": "tsc && node ./dist/app.js"
+    "start-dev-mode": "nodemon -e ts  --exec \"npm run dev-mode\"",
+    "dev-mode": "tsc && node ./dist/app.js"
   },
   "author": "Dexaf",
   "license": "ISC",

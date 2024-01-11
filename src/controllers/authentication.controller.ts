@@ -3,12 +3,12 @@ import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
-import { LogInDto, SignOnDto } from "../models/dto/authentication.dto.js";
+import { LogInDto, SignOnDto } from "../models/dto/req/authentication.dto.js";
 import { UserModel } from "../models/schemas/user.schema.js";
 import { ErrorExt } from "../models/extensions/error.extension.js";
 import { envs } from "../config.js";
 import { errorHandlingRoutine, validationHandlingRoutine } from "../utils/errorHandlingRoutines.js";
-import UserInterface from "../models/interfaces/user.interface.js";
+import UserInterface from "../models/dto/res/user.interface.js";
 import { CustomRequest } from "../models/extensions/request.extension.js";
 
 export const signOn = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -43,7 +43,7 @@ export const logIn = async (req: express.Request, res: express.Response, next: e
 
     const user = await UserModel.findOne({ username: body.username });
     if (!user)
-      throw new ErrorExt("NO_USERNAME_FOUND_IN_LOGIN", 404, null);
+      throw new ErrorExt("USERNAME_NO_MATCH", 404, null);
 
     const isPasswordMatching = await bcrypt.compare(body.password, user.password);
 
