@@ -65,13 +65,11 @@ export const logIn = async (req: express.Request, res: express.Response, next: e
 
 export const getUser = async (req: CustomRequest, res: express.Response, next: express.NextFunction) => {
   const user = await UserModel.findById(req.user.id)
-  if(user) {
-    const userData: UserInterface = {
-      username: user.username
-    }
-    res.send(userData);
+  if (!user)
+    throw new ErrorExt("USERNAME_NO_MATCH", 404);
+
+  const userData: UserInterface = {
+    username: user.username
   }
-  else {
-    res.status(204).send();
-  }
+  res.send(userData);
 }
