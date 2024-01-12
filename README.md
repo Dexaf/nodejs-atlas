@@ -186,7 +186,7 @@ From now on the user will be authenticated and the **isAuthGuard** will extract 
                                   //here
 export const getUser = async (req: CustomRequest, res: express.Response, next: express.NextFunction) => {
   const user = await UserModel.findById(req.user.id)
-  const userData: UserInterface = {
+  const userData: UserDto = {
     username: user.username
   }
   res.send(userData);
