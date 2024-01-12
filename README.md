@@ -207,3 +207,4 @@ if you want to pass more data inside req to the subsequent middleware just chang
 ## CONCLUSION
 This project is just a blueprint i've made for fun because i don't enjoy spending the first 5 hours of my new projects to set up things i always use.
 While writing this readme i've seen various things to change to make the project better and you probably enjoy doing things in a different way but before changing anything i feel the need to tell you that i've made this blueprint with the idea of using only the minimum amount of "engineering", why? Because over-engineering is the killer of every joy, the burocracy of programming and the labyrint of every ticket you get from QA, think carefully before adding any layer in the flows... 
+Also remember to delete the .git file if you dont want to ask to push to my repo :D
