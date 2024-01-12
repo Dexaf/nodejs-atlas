@@ -1,4 +1,4 @@
-import ev, { Result } from "express-validator";
+import ev from "express-validator";
 import express from "express";
 import { ErrorExt } from "../models/extensions/error.extension.js";
 
@@ -11,6 +11,6 @@ export const validationHandlingRoutine = (req: express.Request, res: express.Res
 export const errorHandlingRoutine = (error: any, next: express.NextFunction) => {
   let _error = error;
   if (!(_error instanceof ErrorExt))
-    _error = new ErrorExt("UNKOWN_ERROR", 500, null);
+    _error = new ErrorExt("UNKOWN_ERROR", 500);
   return next(error);
 }

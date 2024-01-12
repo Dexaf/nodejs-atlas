@@ -34,6 +34,6 @@ export const singOn = [
 ]
 
 export const logIn = [
-  ev.body(getfieldName<SignOnDto>("username")).exists(),
-  ev.body(getfieldName<SignOnDto>("password")).exists()
+  ev.body(getfieldName<SignOnDto>("username")).exists().withMessage({ message: "MISSING_USERNAME", errorCode: 400 }),
+  ev.body(getfieldName<SignOnDto>("password")).exists().withMessage({ message: "MISSING_PASSWORD", errorCode: 400 })
 ]

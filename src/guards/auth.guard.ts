@@ -10,7 +10,7 @@ export const isAuthGuard = (req: CustomRequest, res: express.Response, next: exp
   const authHeader = req.get('Authorization');
 
   if (!authHeader) {
-    throw new ErrorExt('Not authenticated.', 401, null);
+    throw new ErrorExt('Not authenticated.', 401);
   }
 
   const token = authHeader.split(' ')[1];
@@ -20,13 +20,13 @@ export const isAuthGuard = (req: CustomRequest, res: express.Response, next: exp
     decodedToken = jwt.verify(token, envs!.JWT_SECRET) as JwtData;
   } catch (err) {
     if (err.message === "jwt expired")
-      throw new ErrorExt('JWT_EXPIRED', 500, null);
+      throw new ErrorExt('JWT_EXPIRED', 500);
     else
-      throw new ErrorExt('Error during verification', 500, null);
+      throw new ErrorExt('Error during verification', 500);
   }
 
   if (!decodedToken) {
-    throw new ErrorExt('Not authenticated.', 401, null);
+    throw new ErrorExt('Not authenticated.', 401);
   }
 
   //Authenticated data sent to the routes middleware

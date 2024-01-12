@@ -43,12 +43,12 @@ export const logIn = async (req: express.Request, res: express.Response, next: e
 
     const user = await UserModel.findOne({ username: body.username });
     if (!user)
-      throw new ErrorExt("USERNAME_NO_MATCH", 404, null);
+      throw new ErrorExt("USERNAME_NO_MATCH", 404);
 
     const isPasswordMatching = await bcrypt.compare(body.password, user.password);
 
     if (!isPasswordMatching)
-      throw new ErrorExt("WRONG_PASSWORD", 403, null);
+      throw new ErrorExt("WRONG_PASSWORD", 403);
 
     const userData = {
       id: user._id,
@@ -65,8 +65,13 @@ export const logIn = async (req: express.Request, res: express.Response, next: e
 
 export const getUser = async (req: CustomRequest, res: express.Response, next: express.NextFunction) => {
   const user = await UserModel.findById(req.user.id)
-  const userData: UserInterface = {
-    username: user.username
+  if(user) {
+    const userData: UserInterface = {
+      username: user.username
+    }
+    res.send(userData);
   }
-  res.send(userData);
+  else {
+    res.status(204).send();
+  }
 }

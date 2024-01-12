@@ -174,9 +174,7 @@ inside the logic handling part there will be the usual model generation from the
 If you are going to throw an error throw it using my interface **errorExt**, With it we can pass the proper status code that will be handled by **errorHandlingRoutine** and then sent to the client.
 
 ```typescript
-//The third argument is used pass the validation error stack
-//you dont need it so just pass null 
-throw new ErrorExt("NO_USERNAME_FOUND_IN_LOGIN", 404, null);
+throw new ErrorExt("NO_USERNAME_FOUND_IN_LOGIN", 404);
 ```
 
 ## AUTHENTICATION
