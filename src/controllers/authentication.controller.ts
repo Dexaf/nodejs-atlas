@@ -3,19 +3,19 @@ import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
-import { LogInDto, SignOnDto } from "../models/dto/req/authentication.dto.js";
+import { LogInDtoReq, SignOnDtoReq } from "../models/dto/req/authentication.dto.req.js";
 import { UserModel } from "../models/schemas/user.schema.js";
 import { ErrorExt } from "../models/extensions/error.extension.js";
 import { envs } from "../config.js";
 import { errorHandlingRoutine, validationHandlingRoutine } from "../utils/errorHandlingRoutines.js";
-import UserDto from "../models/dto/res/user.dto.js";
+import UserDtoRes from "../models/dto/res/user.dto.res.js";
 import { CustomRequest } from "../models/extensions/request.extension.js";
 
 export const signOn = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
     validationHandlingRoutine(req, res);
 
-    const body = req.body as SignOnDto;
+    const body = req.body as SignOnDtoReq;
 
     const hashedPass = await bcrypt.hash(body.password, parseInt(envs!.PASSWORD_SALT));
     const newUser = new UserModel({
@@ -39,7 +39,7 @@ export const logIn = async (req: express.Request, res: express.Response, next: e
   try {
     validationHandlingRoutine(req, res);
 
-    const body = req.body as LogInDto;
+    const body = req.body as LogInDtoReq;
 
     const user = await UserModel.findOne({ username: body.username });
     if (!user)
@@ -68,7 +68,7 @@ export const getUser = async (req: CustomRequest, res: express.Response, next: e
   if (!user)
     throw new ErrorExt("USERNAME_NO_MATCH", 404);
 
-  const userData: UserDto = {
+  const userData: UserDtoRes = {
     username: user.username
   }
   res.send(userData);

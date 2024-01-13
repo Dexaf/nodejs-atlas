@@ -121,9 +121,9 @@ export default postsRouter;
 as you can see i prefer to give the same to the validationChain, controller method and route so it's easier to see what's related and what is not when you have a big router full of endpoints.
 
 2. Add the interface you are going to use inside the models/dto/req - dto/res folder.
-**post.dto.ts**
+**post.dto.req.ts**
 ```typescript
-export interface PostDto {
+export interface PostDtoReq {
   title: string,
   content: string
 }
@@ -132,7 +132,7 @@ export interface PostDto {
 **posts.validation-chains.ts**
 ```typescript
 export const logIn = [
-  ev.body(getfieldName<PostDto>("title"))
+  ev.body(getfieldName<PostDtoReq>("title"))
     .exists()
     .isLength({ min: 1})
     .custom((title:string) => {
@@ -143,7 +143,7 @@ export const logIn = [
       }
     })
     .withMessage({ message: "TITLE_WITH_SPECIAL_CHARCTER", errorCode: 422 }),
-  ev.body(getfieldName<PostDto>("content"))
+  ev.body(getfieldName<PostDtoReq>("content"))
     .exists(),
     .isLength({ min: 1}),
 ]
@@ -158,7 +158,7 @@ export const add = async (req: express.Request, res: express.Response, next: exp
 
     //this let you handle the body with a type and not as any object
 
-    const body = req.body as addDto; 
+    const body = req.body as addDtoReq; 
     ...LOGIC HANDLING   
   } catch (error: any) {
     return errorHandlingRoutine(error, next);
@@ -186,7 +186,7 @@ From now on the user will be authenticated and the **isAuthGuard** will extract 
                                   //here
 export const getUser = async (req: CustomRequest, res: express.Response, next: express.NextFunction) => {
   const user = await UserModel.findById(req.user.id)
-  const userData: UserDto = {
+  const userData: UserDtoRes = {
     username: user.username
   }
   res.send(userData);
