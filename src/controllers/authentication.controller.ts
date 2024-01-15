@@ -43,7 +43,7 @@ export const logIn = async (req: express.Request, res: express.Response, next: e
 
     const user = await UserModel.findOne({ username: body.username });
     if (!user)
-      throw new ErrorExt("USERNAME_NO_MATCH", 404);
+      throw new ErrorExt("USER_NO_MATCH", 404);
 
     const isPasswordMatching = await bcrypt.compare(body.password, user.password);
 
@@ -66,7 +66,7 @@ export const logIn = async (req: express.Request, res: express.Response, next: e
 export const getUser = async (req: CustomRequest, res: express.Response, next: express.NextFunction) => {
   const user = await UserModel.findById(req.user.id)
   if (!user)
-    throw new ErrorExt("USERNAME_NO_MATCH", 404);
+    throw new ErrorExt("USER_NO_MATCH", 404);
 
   const userData: UserDtoRes = {
     username: user.username
