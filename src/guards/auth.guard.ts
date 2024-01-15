@@ -29,6 +29,7 @@ export const isAuthGuard = (req: CustomRequest, res: express.Response, next: exp
     throw new ErrorExt('NOT_AUTHENTICATED', 401);
   }
 
+//Authenticated data sent to the routes middleware
   req.user = {
     id: decodedToken.userData.id
   }
