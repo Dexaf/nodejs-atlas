@@ -22,7 +22,7 @@ const main = async () => {
       //!SECTION - MIDDLEWARES
 
       //SECTION - ROUTES
-      app.use('/Auth', authenticationRouter);
+      app.use('/auth', authenticationRouter);
       //!SECTION - ROUTES
 
       //NOTE - error middleware need to be here to catch errors from the route
