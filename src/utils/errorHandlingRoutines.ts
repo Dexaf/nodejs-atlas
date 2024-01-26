@@ -12,5 +12,5 @@ export const errorHandlingRoutine = (error: any, next: express.NextFunction) => 
   let _error = error;
   if (!(_error instanceof ErrorExt))
     _error = new ErrorExt("UNKOWN_ERROR", 500);
-  return next(error);
+  return next(_error);
 }
